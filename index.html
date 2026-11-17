@@ -84,8 +84,6 @@ footer{position:fixed;inset:auto 0 0 0;height:66px;background:#fff;border-top:1p
 .mbox{background:#fff;border-radius:16px;max-width:860px;width:100%;max-height:88vh;overflow:auto;padding:24px 28px;position:relative;line-height:1.55}
 .mbox h2{margin:0 0 6px}
 .mbox .x{position:absolute;right:14px;top:10px;border:none;background:none;font-size:24px;color:var(--muted)}
-.crit{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0}
-.crit b{display:block}.crit .ok{color:#15803D;font-weight:700}
 .step{border-left:4px solid var(--line);padding:4px 0 8px 12px;margin:8px 0}
 .step b{display:block}
 .mbox pre{background:var(--soft);border-radius:10px;padding:14px;font:13px/1.5 var(--mono);white-space:pre-wrap}
@@ -106,7 +104,6 @@ footer{position:fixed;inset:auto 0 0 0;height:66px;background:#fff;border-top:1p
     <button class="btn opt" id="bcol">⊖ Lecturas</button>
     <button class="btn on" id="bx">⇢ Cruzados</button>
     <button class="btn opt" id="bmd">📄 Markdown</button>
-    <button class="btn" id="bcrit">✔ Criterios</button>
     <button class="btn" id="bteam">👥 Grupo</button>
     <button class="btn opt" id="bfull" title="Pantalla completa">⛶</button>
   </div>
@@ -129,7 +126,6 @@ footer{position:fixed;inset:auto 0 0 0;height:66px;background:#fff;border-top:1p
   <div id="info"></div>
 </footer>
 
-<div class="modal" id="mcrit"><div class="mbox"><button class="x" data-close>✕</button><div id="critbody"></div></div></div>
 <div class="modal" id="mmd"><div class="mbox"><button class="x" data-close>✕</button>
   <h2>📄 Esquema Markdown (fuente del Markmap)</h2>
   <p style="color:var(--muted)">Este es el esquema jerárquico del que se genera el mapa. Puede pegarse en markmap.js.org para reconstruirlo.</p>
@@ -1992,19 +1988,6 @@ function toMarkdown(node, depth){
 const MD = toMarkdown(TREE,0) + "\n## ⇢ Enlaces cruzados\n" + CROSS.map(c=>`- ${byId[c[0]].title} → *${c[2]}* → ${byId[c[1]].title}`).join("\n") + "\n";
 document.getElementById("bmd").onclick=()=>{ document.getElementById("mdsrc").textContent=MD; document.getElementById("mmd").classList.add("open"); };
 document.getElementById("copymd").onclick=async()=>{ try{ await navigator.clipboard.writeText(MD); document.getElementById("copyok").textContent="Copiado ✓"; }catch(e){ document.getElementById("copyok").textContent="Selecciona el texto y cópialo manualmente"; } };
-const CRIT=[
- ["Jerarquía clara","Concepto nuclear → 4 ejes de las Lecturas Fundamentales → técnicas específicas.","Centro “Análisis y Verificación de Algoritmos” → L1, L2, L3, L4 (un color por lectura) → conceptos → detalles. Todo el contenido proviene de las cuatro lecturas."],
- ["Palabras de enlace explícitas","Todo conector tiene un verbo o frase conectora.","Cada nodo muestra en gris cursiva su palabra de enlace con el padre; la ventana de cada nodo lista sus proposiciones completas (concepto + enlace + concepto)."],
- ["Nodos de implementación real (obligatorio)","Cada rama desemboca en al menos un caso real.","🏧 Cajero automático (L1) · 💳 Cupo de tarjeta de crédito (L2) · 🔍 Búsqueda binaria de Java, 2006 (L3) · 📱 Contactos del celular (L4). Cada concepto tiene además su conexión con el caso en la ventana."],
- ["Enlaces cruzados",`Mostrar cómo un concepto de una lectura condiciona otras.`,`${CROSS.length} enlaces en rojo punteado: tripla → teorema de invarianza, wp → teorema, especificación → mejor/peor caso, cota de ciclo → T(n), búsqueda binaria → contactos.`],
- ["Herramienta interactiva","Nodos desplegables, ventanas emergentes, zoom y rutas de navegación.","Markmap: ramas plegables (clic en el círculo), zoom y paneo; ventana emergente por nodo; recorrido guiado con flechas; esquema Markdown fuente incluido."],
- ["Sustentación y video","Navegación en vivo, explicación con palabras propias, cierre integrador.","Recorrido guiado L1 → L4 (flechas ← →) que abre cada concepto en orden, de la teoría al caso real, y vuelve al concepto central para el cierre."]
-];
-document.getElementById("bcrit").onclick=()=>{
-  document.getElementById("critbody").innerHTML = "<h2>✔ Criterios de la guía metodológica</h2>"
-   + CRIT.map(c=>`<div class="crit"><b>${c[0]}</b><span style="color:var(--muted)">${c[1]}</span><br><span class="ok">✔ Cómo se cumple:</span> ${c[2]}</div>`).join("");
-  document.getElementById("mcrit").classList.add("open");
-};
 addEventListener("resize",()=>setTimeout(drawCross,150));
 </script>
 </body>
