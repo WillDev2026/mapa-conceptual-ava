@@ -1884,6 +1884,7 @@ svgEl.appendChild(defs);
 const _render = mm.renderData.bind(mm);
 mm.renderData = async function(...a){ const r = await _render(...a); drawCross(); markSel(); return r; };
 setTimeout(()=>{ drawCross(); }, 600);
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>setTimeout(async()=>{ await mm.setData(DATA); mm.fit(); drawCross(); },100));
 
 /* ---------- Clic en un nodo: abre la ventana ---------- */
 svgEl.addEventListener("click", e=>{
